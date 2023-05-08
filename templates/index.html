@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    #map {
+            height: 600px;
+    }
+</style>
+<body class="" onload="init();">
+    <div class="container-fluid">
+      <div class="row g-5">
+        <div class="col-3">
+          <div class="p-2 border border-primary border-3 rounded bg-light">
+              <p>All patients</p>
+              <h1>{{num_home[0]}}</h1>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="p-2 border border-success border-3 rounded bg-light">
+              <p>Recovered</p>
+              <h1>{{num_home[1]}}</h1>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="p-2 border border-warning border-3 rounded bg-light">
+              <p>Watch out</p>
+              <h1>{{num_home[2]}}</h1>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="p-2 border border-danger border-3 rounded bg-light">
+              <p>Deaths</p>
+              <h1>{{num_home[3]}}</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br><br>
+    <div class="container-fluid border p-2 rounded">
+        <div id="map"></div>
+    </div>
+</body>
+
+{% endblock %}
+
+
+{% block script %}
+<script type="text/javascript" src="https://api.longdo.com/map/?key=6ce0ccf476df55316b9f3be965549590"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script>
+
+    function init() {
+        var map = new longdo.Map({
+            placeholder: document.getElementById('map')
+        });
+
+        {% for i in range(num_member) %}
+
+        var marker{{i}} = new longdo.Marker({ lon: {{position[i][1]}}, lat: {{position[i][0]}} },
+            { title: '{{position[i][2]}} {{position[i][3]}}',
+              detail: '{{position[i][4]}}',
+              popup: { html:'<div class="card"> <div class="card-body"> <h6>Name: {{position[i][2]}} {{position[i][3]}}</h6> <a href ="/user_details?ID={{position[i][5]}}"> View more </a></div></div>'
+              }
+        });
+        map.Overlays.add(marker{{i}});
+
+<!--        var popup{{i}} = new longdo.Popup({ lon: {{position[i][1]}}, lat: {{position[i][0]}} },-->
+<!--        {-->
+<!--            title: 'Popup{{i}}',-->
+<!--            detail: 'Simple popup'-->
+<!--        });-->
+
+<!--        map.Event.bind('overlayClick', function(overlay) {-->
+<!--            console.log(overlay)-->
+<!--            map.Overlays.add(popup{{i}});-->
+<!--        });-->
+        {% endfor %}
+
+    }
+
+</script>
+{% endblock %}

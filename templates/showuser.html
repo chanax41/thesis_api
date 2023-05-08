@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="table-responsive">
+    <a href="/add_user" class="btn btn-primary text-white" target="_blank">
+        Add User +
+    </a>
+    <table class="table table-striped">
+
+        <thead>
+        <tr>
+            <th style="width: 5%;">ID</th>
+            <th style="width: 10%;">username</th>
+            <th style="width: 5%;">status</th>
+            <th style="width: 10%;">fname</th>
+            <th style="width: 10%;">lname</th>
+            <th style="width: 10%;">email</th>
+            <th style="width: 10%;">address</th>
+            <th style="width: 5%;">lat</th>
+            <th style="width: 5%;">lng</th>
+            <th style="width: 10%;">position</th>
+            <th style="">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in data %}
+        <tr>
+            <td>{{item[0]}}</td>
+            <td>{{item[1]}}</td>
+            <td>{{item[3]}}</td>
+            <td>{{item[4]}}</td>
+            <td>{{item[5]}}</td>
+            <td>{{item[6]}}</td>
+            <td>{{item[7]}}</td>
+            <td>{{item[8]}}</td>
+            <td>{{item[9]}}</td>
+            <td>{{item[10]}}</td>
+            <td>
+                <a href="/delete?id={{item[0]}}" class="btn btn-danger text-white" target="_blank">
+                    DELETE
+                </a>
+                <a href="/update?id={{item[0]}}" class="btn btn-primary text-white">
+                    UPDATE
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+
+{% endblock %}

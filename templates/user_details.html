@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 style="text-align:center;">Personal Information</h1>
+                        <canvas id="myChart" height="100"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2>Personal Information</h2>
+                <div class="row">
+                    <div class="col-md-10">
+                        <form action="/add_user_db" method="post">
+                             <div class="row">
+                                 <div class="form-group col-md-6">
+                                     <div class="row">
+                                         <div class="form-group col-6">
+                                             <label class="form-label">ID:</label>
+                                             <input autocomplete="off" autofocus class="form-control" value="{{data_user[0]}}" type="text" readonly/>
+                                         </div>
+                                         <div class="form-group col-6">
+                                             <label class="form-label">Username:</label>
+                                             <input autocomplete="off" class="form-control" value="{{data_user[1]}}" type="text" readonly/>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div class="form-group col-6">
+                                     <div class="row">
+                                         <div class="form-group col-6">
+                                             <label class="form-label">First Name:</label>
+                                             <input autocomplete="off" class="form-control" value="{{data_user[4]}}" type="text" readonly/>
+                                         </div>
+                                         <div class="form-group col-6">
+                                             <label class="form-label">Last Name:</label>
+                                             <input autocomplete="off" class="form-control" value="{{data_user[5]}}" type="text" readonly/>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="row">
+                                 <div class="form-group col-md-6">
+                                     <label class="form-label">Address:</label>
+                                     <input autocomplete="off" class="form-control" value="{{data_user[7]}}" type="text" readonly/>
+                                 </div>
+                                 <div class="form-group col-md-6">
+                                     <label class="form-label">Email:</label>
+                                     <input autocomplete="off" class="form-control" value="{{data_user[6]}}" type="text" readonly/>
+                                 </div>
+                             </div>
+
+                            <div class="row">
+                                 <div class="form-group col-md-6">
+                                     <div class="row">
+                                         <div class="form-group col-6">
+                                             <label class="form-label">Latitude:</label>
+                                             <input autocomplete="off" class="form-control" value="{{data_user[8]}}" type="text" readonly/>
+                                         </div>
+                                         <div class="form-group col-6">
+                                             <label class="form-label">Longitude:</label>
+                                             <input autocomplete="off" class="form-control" value="{{data_user[9]}}" type="text" readonly/>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div class="form-group col-md-6">
+                                     <label class="form-label">Position:</label>
+                                     <input autocomplete="off" class="form-control" value="{{data_user[10]}}" type="text" readonly/>
+                                 </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-2 border rounded p-3 ">
+                        <h2 class="">Update Status</h2>
+                        <p>Has the patient recovered?</p>
+                        <form action="/update_status" method="post" >
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="update_status" value="not_Recovered" id="Radio1"
+                                     {{check_not_re}} >
+                              <label class="form-check-label"  for="Radio1">
+                                Not Recovered
+                              </label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="update_status" value="Recovered" id="Radio2"
+                                     {{check_re}}>
+                              <label class="form-check-label" for="Radio2">
+                                Recovered
+                              </label>
+                            </div>
+                            <input class="form-control" value="{{data_user[0]}}" type="hidden" name="ID"/>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="update_status" value="Death" id="Radio3"
+                                     {{check_de}}>
+                              <label class="form-check-label" for="Radio3">
+                                Death
+                              </label>
+                            </div>
+
+                            <input class="form-control" value="{{data_user[0]}}" type="hidden" name="ID"/>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <input type="submit" class="btn btn-primary" value="Update">
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th style="width: 15%;">Date</th>
+                            <th style="width: 15%;">time</th>
+                            <th style="width: 10%;">Temp</th>
+                            <th style="width: 10%;">Hum</th>
+                            <th style="width: 10%;">Hart Rate</th>
+                            <th style="width: 10%;">Face Process</th>
+                            <th style="width: 10%;">Risk Level</th>
+                            <th style="width: 30%;">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for i in range(10) %}
+                        <tr>
+                            <td>{{date[i]}}</td>
+                            <td>{{datetime[i]}}</td>
+                            <td>{{Temp[i]}}</td>
+                            <td>{{Hum[i]}}</td>
+                            <td>{{HR[i]}}</td>
+                            <td>{{predict[i]}}</td>
+                            <td>
+                                <div style=" width: 20px; height: 20px; background-color: {{colors[i]}};" class="rounded-circle"></div>
+                            </td>
+                            <td>
+                                <a href="/delete?id={{ID}}" class="btn btn-danger text-white" target="_blank">
+                                    DELETE
+                                </a>
+
+                                <a href="/update?id={{ID}}" class="btn btn-primary text-white">
+                                    UPDATE
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
+<script>
+    var xValues = [{% for i in datetime %} '{{i}}', {% endfor %} ];
+
+    new Chart("myChart", {
+      type: "line",
+      data: {
+        labels: xValues,
+        datasets: [{
+          label: "SpO2 (%)",
+          data: {{Hum}},
+          borderColor: "#f8c555",
+          fill: false,
+          yAxisID: 'y-axis-1'
+        },{
+          label: "Temperature (°C)",
+          data: {{Temp}},
+          borderColor: "#ff6384",
+          fill: false,
+          yAxisID: 'y-axis-1'
+        },{
+          label: "Heart rate (bpm)",
+          data: {{HR}},
+          borderColor: "#3080d0",
+          fill: false,
+          yAxisID: 'y-axis-2'
+        }]
+      },
+      options: {
+        responsive: true,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        stacked: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Chart.js Line Chart - Multi Axis'
+          }
+        },
+        scales: {
+          yAxes: [{
+            id: 'y-axis-1',
+            type: 'linear',
+            display: true,
+            position: 'left',
+          },{
+            id: 'y-axis-2',
+            type: 'linear',
+            display: true,
+            position: 'right',
+            grid: {
+              drawOnChartArea: false, // only want the grid lines for one axis to show up
+            },
+          }]
+        },
+      }
+});
+</script>
+
+{% endblock %}

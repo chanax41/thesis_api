@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+
+            <th style="width: 5%;">ID</th>
+            <th style="width: 15%;">Firstname</th>
+            <th style="width: 15%;">Lastname</th>
+            <th style="width: 15%;">E-mail</th>
+            <th style="width: 30%;">Address</th>
+            <th style="width: 20%;">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in data %}
+        <tr>
+            <td>{{item[0]}}</td>
+            <td>{{item[1]}}</td>
+            <td>{{item[2]}}</td>
+            <td>{{item[3]}}</td>
+            <td>{{item[4]}}</td>
+            <td>
+                <a href="/user_details?id={{item[0]}}" class="btn btn-primary text-white">
+                    View Details
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+
+{% endblock %}

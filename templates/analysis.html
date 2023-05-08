@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 style="text-align:center;">Scatter Plot With Regression Line</h1>
+                <form method="post" action="analysis_chart">
+                    <div class="row mx-auto border p-3 px-5" style="width: 80%;">
+                        <p style="text-align:center;">Choose a factor to chart.</p>
+                         <div class="form-group col-md-6" >
+                             <label class="form-label">Factor [x]:</label>
+                             <select class="form-select" name="factor_x" aria-label="Default select example">
+                                 <option selected>Open this select menu</option>
+                                 <option value="HeartRate">Heart Rate</option>
+                                 <option value="SpO2">SpO2</option>
+                                 <option value="Temp">Temperature</option>
+                            </select>
+                         </div>
+                         <div class="form-group col-md-6">
+                             <label class="form-label">Factor [Y]:</label>
+                             <select class="form-select" name="factor_y" aria-label="Default select example">
+                                 <option selected>Open this select menu</option>
+                                 <option value="HeartRate">Heart Rate</option>
+                                 <option value="SpO2">SpO2</option>
+                                 <option value="Temp">Temperature</option>
+                            </select>
+                         </div>
+                        <div class="d-grid col-6 mx-auto">
+                            <input type="submit" class="btn btn-outline-primary">
+                        </div>
+                    </div>
+                </form>
+                <canvas id="myChart3" width="400" height="180"></canvas>
+            </div>
+        </div>
+         <div class="row">
+            <div class="col-md-6" style="text-align:center;">
+                <h1>Linear Regression</h1>
+                <h3>{{reg}}</h3>
+            </div>
+             <div class="col-md-6" style="text-align:center;">
+                <h1>Correlation</h1>
+                <h3>{{cor}}</h3>
+            </div>
+         </div>
+<!--        <div class="row">-->
+<!--            <div class="col-md-6">-->
+<!--                <h1 style="text-align:center;">Flask with Chart.js</h1>-->
+<!--                <canvas id="myChart" width="400" height="400"></canvas>-->
+<!--            </div>-->
+<!--            <div class="col-md-6">-->
+<!--                <h1 style="text-align:center;">Flask with Chart.js</h1>-->
+<!--                <canvas id="myChart2" width="400" height="400"></canvas>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [{% for item in datetime %}"{{item}}",{% endfor %}],
+            datasets: [{
+                label: 'Temperature',
+                data: {{ temp }},
+                borderWidth: 1,
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }],
+                x: [{
+                    type: 'time'
+                }]
+            }
+        }
+    });
+    </script>
+
+    <script>
+    var ctx = document.getElementById('myChart2').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [{% for item in datetime %}"{{item}}",{% endfor %}],
+            datasets: [{
+                label: '# of Votes',
+                data: {{HR}},
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+    </script>
+
+    <script>
+    var ctx = document.getElementById('myChart3').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Sample Data',
+                data: [{{scetter}}],
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+                pointRadius: 3,
+                pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                yAxisID: 'y-axis-1'
+            },
+            {
+                type: 'line',
+                label: 'Regression Line',
+                data: [
+                    {{reg_data}},
+                ],
+                backgroundColor: 'rgba(0, 0, 0, 0)',
+                borderColor: '#3080d0',
+                borderWidth: 2,
+                pointRadius: 0,
+                yAxisID: 'y-axis-1'
+            }
+            ],
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom'
+                },
+                yAxes: [{
+                   scaleLabel: {
+                       display: true,
+                       labelString: '{{ay}}',
+                   }
+                }],
+                xAxes: [{
+                   scaleLabel: {
+                       display: true,
+                       labelString: '{{ax}}',
+                   }
+                }],
+            },
+            plugins: {
+              regression: {
+                type: 'linear',
+                color: 'red'
+              }
+            }
+        }
+    });
+    </script>
+
+
+
+{% endblock %}
