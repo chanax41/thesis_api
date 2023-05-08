@@ -16,8 +16,8 @@ import hashlib
 mydb = mysql.connector.connect(
     host='dpg-chciaru7avjcvo1rg0ng-a:5432',
     user='chanax',
-    password='#asd123456789',
-    database='US00LKNh3WVqsZv1kGQt4dFJ5mhbUaB5'
+    password='US00LKNh3WVqsZv1kGQt4dFJ5mhbUaB5',
+    database='thesis_aub4'
 )
 
 mycur = mydb.cursor()
