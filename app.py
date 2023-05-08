@@ -14,10 +14,10 @@ import mysql.connector
 # )
 import hashlib
 mydb = mysql.connector.connect(
-    host='dpg-chciaru7avjcvo1rg0ng-a:5432',
+    host='www.db4free.net',
     user='chanax',
-    password='US00LKNh3WVqsZv1kGQt4dFJ5mhbUaB5',
-    database='thesis_aub4'
+    password='#Asdf123456789',
+    database='thesis'
 )
 
 mycur = mydb.cursor()
