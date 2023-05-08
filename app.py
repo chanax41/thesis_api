@@ -14,10 +14,10 @@ import mysql.connector
 # )
 import hashlib
 mydb = mysql.connector.connect(
-    host='chanax.mysql.pythonanywhere-services.com',
+    host='dpg-chciaru7avjcvo1rg0ng-a:5432',
     user='chanax',
     password='#asd123456789',
-    database='chanax$thesis'
+    database='US00LKNh3WVqsZv1kGQt4dFJ5mhbUaB5'
 )
 
 mycur = mydb.cursor()
