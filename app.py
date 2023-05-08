@@ -6,19 +6,19 @@ import requests
 import numpy as np
 from scipy.stats import pearsonr
 import mysql.connector
-mydb = mysql.connector.connect(
-    host='localhost',
-    user='root',
-    password='',
-    database='thesis'
-)
-import hashlib
 # mydb = mysql.connector.connect(
-#     host='thesis2022.mysql.pythonanywhere-services.com',
-#     user='thesis2022',
-#     password='#@sdf1234',
-#     database='thesis2022$thesis'
+#     host='localhost',
+#     user='root',
+#     password='',
+#     database='thesis'
 # )
+import hashlib
+mydb = mysql.connector.connect(
+    host='chanax.mysql.pythonanywhere-services.com',
+    user='chanax',
+    password='#asd123456789',
+    database='chanax$thesis'
+)
 
 mycur = mydb.cursor()
 from datetime import datetime, timezone, timedelta
