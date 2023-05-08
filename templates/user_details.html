@@ -9,6 +9,26 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h1 style="text-align:center;">Personal Information</h1>
+                        <div class="row">
+                        <div style="margin: 0 auto; width: 10vw; height: auto;padding: 20px;">
+                            <canvas class="chartjs-gauge1"></canvas>
+                            <h6 style="text-align: center;">SpO2</h6>
+                            <p style="text-align: center;">{{Hum[0]}} %</p>
+                        </div>
+
+                        <div style="margin: 0 auto; width: 10vw; height: auto;padding: 20px;">
+                            <canvas class="chartjs-gauge2"></canvas>
+                            <h6 style="text-align: center;">Temperature</h6>
+                            <p style="text-align: center;">{{Temp[0]}} °C</p>
+                        </div>
+
+                        <div style="margin: 0 auto; width: 10vw; height: auto;padding: 20px;">
+                            <canvas class="chartjs-gauge3"></canvas>
+                            <h6 style="text-align: center;">Heart Rate</h6>
+                            <p style="text-align: center;">{{HR[0]}} BPM</p>
+                        </div>
+                        </div>
+
                         <canvas id="myChart" height="100"></canvas>
                     </div>
                 </div>
@@ -140,7 +160,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for i in range(10) %}
+                        {% for i in range(29,-1,-1) %}
                         <tr>
                             <td>{{date[i]}}</td>
                             <td>{{datetime[i]}}</td>
@@ -232,6 +252,186 @@
         },
       }
 });
+</script>
+
+<script>
+// Create chart
+var ctx = document.getElementsByClassName("chartjs-gauge1");
+var chart = new Chart(ctx, {
+    type:"doughnut",
+    data: {
+        labels : ["Red","Blue"],
+        datasets: [{
+            label: "Gauge",
+            data : [{{Hum[0]}},{{100-Hum[0]}}],
+            backgroundColor: [
+                "rgb(255, 99, 132)",
+                "rgb(54, 162, 235)",
+                "rgb(255, 205, 86)"
+            ]
+        }]
+    },
+    options: {
+        circumference: Math.PI,
+        rotation : Math.PI,
+        cutoutPercentage : 80, // precent
+        plugins: {
+					  datalabels: {
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+						  borderColor: '#ffffff',
+              color: function(context) {
+							  return context.dataset.backgroundColor;
+						  },
+						  font: function(context) {
+                var w = context.chart.width;
+                return {
+                  size: w < 512 ? 18 : 20
+                }
+              },
+              align: 'start',
+              anchor: 'start',
+              offset: 10,
+						  borderRadius: 4,
+						  borderWidth: 1,
+              formatter: function(value, context) {
+							  var i = context.dataIndex;
+                var len = context.dataset.data.length - 1;
+                if(i == len){
+                  return null;
+                }
+							  return value+' mph';
+						  }
+            }
+        },
+        legend: {
+            display: false
+        },
+        tooltips: {
+            enabled: false
+        }
+    }
+});
+
+</script>
+
+<script>
+// Create chart
+var ctx = document.getElementsByClassName("chartjs-gauge2");
+var chart = new Chart(ctx, {
+    type:"doughnut",
+    data: {
+        labels : ["Red","Blue"],
+        datasets: [{
+            label: "Gauge",
+            data : [{{Temp[0]}},100 ],
+            backgroundColor: [
+                "rgb(255, 99, 132)",
+                "rgb(54, 162, 235)",
+                "rgb(255, 205, 86)"
+            ]
+        }]
+    },
+    options: {
+        circumference: Math.PI,
+        rotation : Math.PI,
+        cutoutPercentage : 80, // precent
+        plugins: {
+					  datalabels: {
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+						  borderColor: '#ffffff',
+              color: function(context) {
+							  return context.dataset.backgroundColor;
+						  },
+						  font: function(context) {
+                var w = context.chart.width;
+                return {
+                  size: w < 512 ? 18 : 20
+                }
+              },
+              align: 'start',
+              anchor: 'start',
+              offset: 10,
+						  borderRadius: 4,
+						  borderWidth: 1,
+              formatter: function(value, context) {
+							  var i = context.dataIndex;
+                var len = context.dataset.data.length - 1;
+                if(i == len){
+                  return null;
+                }
+							  return value+' mph';
+						  }
+            }
+        },
+        legend: {
+            display: false
+        },
+        tooltips: {
+            enabled: false
+        }
+    }
+});
+
+</script>
+
+<script>
+// Create chart
+var ctx = document.getElementsByClassName("chartjs-gauge3");
+var chart = new Chart(ctx, {
+    type:"doughnut",
+    data: {
+        labels : ["Red","Blue"],
+        datasets: [{
+            label: "Gauge",
+            data : [100, {{HR[0]}}],
+            backgroundColor: [
+                "rgb(255, 99, 132)",
+                "rgb(54, 162, 235)",
+                "rgb(255, 205, 86)"
+            ]
+        }]
+    },
+    options: {
+        circumference: Math.PI,
+        rotation : Math.PI,
+        cutoutPercentage : 80, // precent
+        plugins: {
+					  datalabels: {
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+						  borderColor: '#ffffff',
+              color: function(context) {
+							  return context.dataset.backgroundColor;
+						  },
+						  font: function(context) {
+                var w = context.chart.width;
+                return {
+                  size: w < 512 ? 18 : 20
+                }
+              },
+              align: 'start',
+              anchor: 'start',
+              offset: 10,
+						  borderRadius: 4,
+						  borderWidth: 1,
+              formatter: function(value, context) {
+							  var i = context.dataIndex;
+                var len = context.dataset.data.length - 1;
+                if(i == len){
+                  return null;
+                }
+							  return value+' mph';
+						  }
+            }
+        },
+        legend: {
+            display: false
+        },
+        tooltips: {
+            enabled: false
+        }
+    }
+});
+
 </script>
 
 {% endblock %}

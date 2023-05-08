@@ -314,7 +314,7 @@ def user_details():
     session['user_id'] = 1
     # ID = request.agrs.get("ID")
     ID = 1
-    sql = 'SELECT * FROM user_web WHERE ID=%s;'
+    sql = 'SELECT * FROM user_web WHERE ID=%s; '
     mycur.execute(sql, (ID,))
     data_user = mycur.fetchone()
     print(data_user)
@@ -332,9 +332,9 @@ def user_details():
         check_de = ""
 
     print(bool(check_re), bool(check_not_re), bool(check_de))
-    sql = """SELECT user_web.ID, sensors.timestemp, sensors.temp, sensors.spo2, sensors.heart_rate, emotion.emotion
-            FROM user_web, sensors, emotion 
-            WHERE user_web.ID = %s AND user_web.ID = sensors.user_id AND user_web.ID = emotion.user_id ORDER BY sensors.timestemp DESC LIMIT 50;"""
+    sql = """SELECT user_id, timestemp, temp, spo2, heart_rate
+            FROM sensors
+            WHERE user_id = %s ORDER BY timestemp DESC LIMIT 30;"""
     val = (ID,)
     mycur.execute(sql, val)
     result = mycur.fetchall()
@@ -343,9 +343,20 @@ def user_details():
     SpO2 =[]
     date = []
     datetime = []
+    sql2 = """SELECT emotion  
+                FROM emotion
+                WHERE user_id = %s ORDER BY timestemp DESC LIMIT 30;"""
+    val2 = (ID,)
+    mycur.execute(sql2, val2)
+    result2 = mycur.fetchall()
     predict = []
+
+    for i in result2:
+        predict.append(i[0])
+
     colors = []
     for item in result:
+        count = 0
         level = 0
         date_time = item[1].strftime('%Y-%m-%d %H:%M:%S')
         date_time = date_time.split()
@@ -354,7 +365,6 @@ def user_details():
         Temp.append(item[2])
         SpO2.append(item[3])
         HR.append(item[4])
-        predict.append(item[5])
 
         if item[2] >= 39:
             level += 1
@@ -362,8 +372,9 @@ def user_details():
             level += 1
         if item[4] <= 25:
             level += 1
-        if item[5] == 'Risky':
+        if predict[count] == 'Risky':
             level += 1
+        count+=1
 
         if level == 0:
             color = "#26A69A"
@@ -375,6 +386,14 @@ def user_details():
             color = "#EE1D52"
         colors.append(color)
 
+    print(datetime)
+    predict.reverse()
+    colors.reverse()
+    datetime.reverse()
+    print(datetime)
+    Temp.reverse()
+    SpO2.reverse()
+    HR.reverse()
 
     return render_template('user_details.html', title='User Details', ID=ID, date=date, datetime=datetime,Temp=Temp,HR=HR, Hum=SpO2, predict =predict, colors=colors, data_user=data_user, check_not_re=check_not_re, check_re=check_re, check_de=check_de)
 
