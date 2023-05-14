@@ -355,8 +355,9 @@ def user_details():
         predict.append(i[0])
 
     colors = []
+    score=[]
+    count = 0
     for item in result:
-        count = 0
         level = 0
         date_time = item[1].strftime('%Y-%m-%d %H:%M:%S')
         date_time = date_time.split()
@@ -366,34 +367,32 @@ def user_details():
         SpO2.append(item[3])
         HR.append(item[4])
 
-        if item[2] >= 39:
+        if item[2] > 39:
             level += 1
-        if item[3] <= 94:
+        if item[3] < 94:
             level += 1
-        if item[4] <= 25:
+        if item[4] < 25:
             level += 1
         if predict[count] == 'Risky':
             level += 1
         count+=1
+        score.append(level)
 
         if level == 0:
-            color = "#26A69A"
+            color = "#7CFC00"
         elif level == 1:
-            color = "#F2C94C"
+            color = "#FFEA00"
         elif level == 2:
-            color = "#FF5722"
+            color = "#FFAC1C"
         else:
-            color = "#EE1D52"
+            color = "#DC143C"
         colors.append(color)
 
-    print(datetime)
-    predict.reverse()
-    colors.reverse()
-    datetime.reverse()
-    print(datetime)
-    Temp.reverse()
-    SpO2.reverse()
-    HR.reverse()
+    print(Temp)
+    print(SpO2)
+    print(HR)
+    print(predict)
+    print(score)
 
     return render_template('user_details.html', title='User Details', ID=ID, date=date, datetime=datetime,Temp=Temp,HR=HR, Hum=SpO2, predict =predict, colors=colors, data_user=data_user, check_not_re=check_not_re, check_re=check_re, check_de=check_de)
 
